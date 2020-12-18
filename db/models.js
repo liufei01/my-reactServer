@@ -30,10 +30,11 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true }, //密码
   type: { type: String, required: true }, // 性别
   header: { type: String }, //头像
-  xueii: { type: String }, //学历
-  detail: { type: String }, //个人简介
   age: { type: String }, //年龄
-  money: { type: String } //收入
+  xueii: { type: String }, //学历
+  money: { type: String }, //薪资
+  detail: { type: String }, //个人简介
+  waimao: { type: String }, //外貌
 })
 
 // 定义Model,与集合对应，可以操作集合

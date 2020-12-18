@@ -29,7 +29,7 @@ router.post('/register', function (req, res) {
         err,
         user
       ) {
-        res.cookie('userId', user._id.$oid, { maxAge: 1000 * 60 * 60 * 24 })
+        res.cookie('userId', user._id, { maxAge: 1000 * 60 * 60 * 24 })
         var data = { username, type, _id: user._id.$oid }
         res.send({
           code: 0,
@@ -51,10 +51,48 @@ router.post('/login', function (req, res) {
     user
   ) {
     if (user) {
-      res.cookie('userId', user._id.$oid, { maxAge: 1000 * 60 * 60 * 24 })
+      res.cookie('userId', user._id, { maxAge: 1000 * 60 * 60 * 24 })
       res.send({ code: 0, data: user })
     } else {
       res.send({ code: 1, msg: '用户名或者密码错误' })
+    }
+  })
+})
+// 更新用户信息的路由
+router.post('/update', function (req, res) {
+  // 先获取userId
+  const userId = req.cookies.userId
+  if (!userId) {
+    return res.send({ code: 1, msg: '请先登录' })
+  }
+  // userId存在，根据userId更新用户信息
+  // 得到提交的用户信息
+  const user = req.body
+  UserModel.findByIdAndUpdate({ _id: userId }, user, function (err, oldUser) {
+    if (!oldUser) {
+      // 如果老的用户不存在，告诉浏览器删除cookie
+      res.clearCookie('userId')
+      res.send({ code: 1, msg: 'cookie有误' })
+    } else {
+      const { _id, type, username } = oldUser
+      const data = Object.assign(user, { _id, type, username })
+      res.send({ code: 0, data, msg: new Date() })
+    }
+  })
+})
+
+// 获取用户信息路由(根据cookie)
+router.get('/user', function (req, res) {
+  // 先获取userId
+  const userId = req.cookies.userId
+  if (!userId) {
+    return res.send({ code: 1, msg: '请先登录' })
+  }
+  UserModel.findOne({ _id: userId }, filter, function (err, user) {
+    if (!user) {
+      res.send({ code: 1, msg: '无用户信息' })
+    } else {
+      res.send({ code: 0, data: user })
     }
   })
 })
