@@ -115,7 +115,7 @@ router.get('/msglist', function (req, res) {
   // 获取cookie中的userId
   const userId = req.cookies.userId
   // 查询所有的用户列表
-  UserModel.find(function (err, uselist) {
+  UserModel.find(function (err, userlist) {
     // 用对象存储所有的user信息，key为user的id，value为用户的名称和头像
     const users = {}
     userlist.forEach(user => {
