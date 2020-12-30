@@ -159,4 +159,18 @@ router.post('/readmsg',function (req,res) {
     }
    })
  })
+
+//  按需展示用户
+router.post('/searchPeopel',function (req,res) { 
+  const xueliData=req.body
+  console.log(req.body);
+  // 根据学历去查询符合条件的用户
+  UserModel.find({type:'shuaige', $or:xueliData},filter,function (err,userLists) { 
+    if (userLists) {
+      res.send({code:0,data:userLists})
+    }else{
+      res.send({code:1,msg:'查询失败'})
+    }
+   })
+ })
 module.exports = router
