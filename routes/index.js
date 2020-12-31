@@ -140,10 +140,10 @@ router.get('/msglist', function (req, res) {
 })
 
 // 修改指定消息为已读
-router.post('/readmsg',function (req,res) { 
+router.post('/readmsg', function (req, res) {
   // 得到请求中的from和to
-  const from=req.body.from
-  const to=req.cookies.userId
+  const from = req.body.from
+  const to = req.cookies.userId
   // 去更新数据库中的数据
   /**
    * 参数1、更新条件
@@ -151,26 +151,37 @@ router.post('/readmsg',function (req,res) {
    * 参数3、是否一次更新多条，默认只更新一条
    * 参数4、更新完成的回调函数
    */
-  ChatModel.update({from,to,read:false},{read:true},{multi:true},function (err,doc) { 
-    if(doc){
-      res.send({code:0,data:doc.nModified})  //更新的数据数量
-    }else{
-      res.send({code:1,msg:'修改数据失败'})
+  ChatModel.update(
+    { from, to, read: false },
+    { read: true },
+    { multi: true },
+    function (err, doc) {
+      if (doc) {
+        res.send({ code: 0, data: doc.nModified }) //更新的数据数量
+      } else {
+        res.send({ code: 1, msg: '修改数据失败' })
+      }
     }
-   })
- })
+  )
+})
 
 //  按需展示用户
-router.post('/searchPeopel',function (req,res) { 
-  const xueliData=req.body
-  console.log(req.body);
+router.post('/searchPeopel', function (req, res) {
+  const {type,xueliArrays} = req.body
   // 根据学历去查询符合条件的用户
-  UserModel.find({type:'shuaige', $or:xueliData},filter,function (err,userLists) { 
+  UserModel.find({ type, $or: xueliArrays }, filter, function (
+    err,
+    userLists
+  ) {
     if (userLists) {
-      res.send({code:0,data:userLists})
-    }else{
-      res.send({code:1,msg:'查询失败'})
+      let newData={
+        show:true,
+        userLists
+      }
+      res.send({ code: 0, data: newData })
+    } else {
+      res.send({ code: 1, msg: '查询失败'+err })
     }
-   })
- })
+  })
+})
 module.exports = router
