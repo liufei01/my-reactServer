@@ -18,7 +18,7 @@ f)注册失败返回:{code:1,msg:'此用户已存在'}
 
 // 注册的路由
 // 回调函数的作用：1、获取请求参数，2、处理数据，3、返回响应数据
-router.post('/register', function (req, res) {
+router.post('/api/register', function (req, res) {
   // 1、获取请求参数  post请求从body中取值
   const { username, password, type } = req.body
   // 2、处理逻辑(判断用户是否存在)
@@ -42,7 +42,7 @@ router.post('/register', function (req, res) {
 })
 
 // 登录路由
-router.post('/login', function (req, res) {
+router.post('/api/login', function (req, res) {
   const { username, password } = req.body
 
   // 根据信息查询数据库
@@ -60,7 +60,7 @@ router.post('/login', function (req, res) {
   })
 })
 // 更新用户信息的路由
-router.post('/update', function (req, res) {
+router.post('/api/update', function (req, res) {
   // 先获取userId
   const userId = req.cookies.userId
   if (!userId) {
@@ -83,7 +83,7 @@ router.post('/update', function (req, res) {
 })
 
 // 获取用户信息路由(根据cookie)
-router.get('/user', function (req, res) {
+router.get('/api/user', function (req, res) {
   // 先获取userId
   const userId = req.cookies.userId
   if (!userId) {
@@ -99,7 +99,7 @@ router.get('/user', function (req, res) {
 })
 
 // 获取用户列表（根据类型）
-router.post('/userlist', function (req, res) {
+router.post('/api/userlist', function (req, res) {
   const { type } = req.body
   UserModel.find({ type }, filter, function (err, list) {
     if (!list) {
@@ -111,7 +111,7 @@ router.post('/userlist', function (req, res) {
 })
 
 // 获取用户消息列表
-router.get('/msglist', function (req, res) {
+router.get('/api/msglist', function (req, res) {
   // 获取cookie中的userId
   const userId = req.cookies.userId
   // 查询所有的用户列表
@@ -140,7 +140,7 @@ router.get('/msglist', function (req, res) {
 })
 
 // 修改指定消息为已读
-router.post('/readmsg', function (req, res) {
+router.post('/api/readmsg', function (req, res) {
   // 得到请求中的from和to
   const from = req.body.from
   const to = req.cookies.userId
@@ -166,7 +166,7 @@ router.post('/readmsg', function (req, res) {
 })
 
 //  按需展示用户
-router.post('/searchPeopel', function (req, res) {
+router.post('/api/searchPeopel', function (req, res) {
   const {type,xueliArrays} = req.body
   // 根据学历去查询符合条件的用户
   UserModel.find({ type, $or: xueliArrays }, filter, function (

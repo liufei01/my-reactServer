@@ -24,7 +24,8 @@
 */
 const mongoose = require('mongoose')
 const MD5 = require('blueimp-md5')
-var url = 'mongodb://127.0.0.1:27017/my-reactServer'
+var url = 'mongodb://39.104.69.148:27017/my-reactServer'
+// var url = 'mongodb://127.0.0.1:27017/my-reactServer'
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -62,9 +63,9 @@ function testSave () {
   // 创建UserModel的实例
   // 增加数据 save
   const userModel = new UserModel({
-    username: '辗迟',
+    username: '第五',
     password: MD5('456'),
-    type: 'shuaige'
+    type: 'meinv'
   })
 
   userModel.save(function (err, user) {
@@ -72,7 +73,7 @@ function testSave () {
   })
 }
 
-// testSave()
+testSave()
 // 查询数据 find查全部  findOne查一条
 function testFind () {
   UserModel.find(function (err, users) {
@@ -108,4 +109,4 @@ function testDelete () {
   })
 }
 
-testDelete()
+// testDelete()

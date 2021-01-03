@@ -11,7 +11,8 @@
 // 1.2.连接指定数据库(URL只有数据库是变化的)
 // 1.3.获取连接对象1.4.绑定连接完成的监听(用来提示连接成功)
 const mongoose = require('mongoose')
-var url = 'mongodb://127.0.0.1:27017/my-reactServer'
+var url = 'mongodb://39.104.69.14:27017/my-reactServer'
+// var url = 'mongodb://127.0.0.1:27017/my-reactServer'
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const conn = mongoose.connection
